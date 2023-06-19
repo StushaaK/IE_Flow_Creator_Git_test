@@ -8,20 +8,6 @@
         "env": []
     },
     {
-        "id": "ba5789f372b38778",
-        "type": "tls-config",
-        "name": "",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "",
-        "keyname": "",
-        "caname": "",
-        "servername": "",
-        "verifyservercert": true,
-        "alpnprotocol": ""
-    },
-    {
         "id": "978d5062324de0f4",
         "type": "inject",
         "z": "0aa52e0f871b0885",
@@ -55,7 +41,7 @@
         "type": "debug",
         "z": "0aa52e0f871b0885",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -74,7 +60,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "http://jsonplaceholder.typicode.com/posts/1",
+        "url": "http://jsonplaceholder.typicode.com/posts",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -86,7 +72,8 @@
         "y": 500,
         "wires": [
             [
-                "0beb19bd94d3bc68"
+                "0beb19bd94d3bc68",
+                "5f7b963110f52013"
             ]
         ]
     },
@@ -95,7 +82,7 @@
         "type": "debug",
         "z": "0aa52e0f871b0885",
         "name": "debug 2",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -132,6 +119,41 @@
         "wires": [
             [
                 "4c7459e5d05a26a9"
+            ]
+        ]
+    },
+    {
+        "id": "c281c8ad11c68257",
+        "type": "debug",
+        "z": "0aa52e0f871b0885",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "5f7b963110f52013",
+        "type": "function",
+        "z": "0aa52e0f871b0885",
+        "name": "function 1",
+        "func": "let posts = JSON.parse(msg.payload);\nlet map;\n\n\nmap = posts.map((post) => post.id + \" | \" + post.title + \"\\n\")\n\nmsg.payload = {\n    count: posts.length,\n    map\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 600,
+        "wires": [
+            [
+                "c281c8ad11c68257"
             ]
         ]
     }
