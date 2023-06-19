@@ -56,11 +56,11 @@
         "id": "4c7459e5d05a26a9",
         "type": "http request",
         "z": "0aa52e0f871b0885",
-        "name": "",
+        "name": "get 50 posts",
         "method": "GET",
-        "ret": "txt",
+        "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://jsonplaceholder.typicode.com/posts",
+        "url": "http://jsonplaceholder.typicode.com/posts?_end=50",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -86,7 +86,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 640,
@@ -123,37 +124,129 @@
         ]
     },
     {
-        "id": "c281c8ad11c68257",
-        "type": "debug",
-        "z": "0aa52e0f871b0885",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 600,
-        "wires": []
-    },
-    {
         "id": "5f7b963110f52013",
         "type": "function",
         "z": "0aa52e0f871b0885",
-        "name": "function 1",
-        "func": "let posts = JSON.parse(msg.payload);\nlet map;\n\n\nmap = posts.map((post) => post.id + \" | \" + post.title + \"\\n\")\n\nmsg.payload = {\n    count: posts.length,\n    map\n};\n\nreturn msg;",
+        "name": "get posts metainformation",
+        "func": "let posts = msg.payload;\nlet count = posts.length;\nlet usersSet = new Set();\n\nposts.forEach((post) => usersSet.add(post.userId));\n\nmsg.topic = \"posts\";\nmsg.payload = {\n    count,\n    usersSet,\n    posts\n};\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
+        "x": 690,
         "y": 600,
         "wires": [
             [
-                "c281c8ad11c68257"
+                "573745fdded094ba",
+                "af589de293d340c2"
+            ]
+        ]
+    },
+    {
+        "id": "573745fdded094ba",
+        "type": "http request",
+        "z": "0aa52e0f871b0885",
+        "name": "get users",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://jsonplaceholder.typicode.com/users",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 900,
+        "y": 740,
+        "wires": [
+            [
+                "3b79ca24e32ea970"
+            ]
+        ]
+    },
+    {
+        "id": "df117f33d545b8eb",
+        "type": "debug",
+        "z": "0aa52e0f871b0885",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1660,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "af589de293d340c2",
+        "type": "join",
+        "z": "0aa52e0f871b0885",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 1250,
+        "y": 600,
+        "wires": [
+            [
+                "91d422f0341658f2"
+            ]
+        ]
+    },
+    {
+        "id": "3b79ca24e32ea970",
+        "type": "function",
+        "z": "0aa52e0f871b0885",
+        "name": "add user topic",
+        "func": "msg.topic = \"users\";\nmsg.complete = true;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 740,
+        "wires": [
+            [
+                "af589de293d340c2"
+            ]
+        ]
+    },
+    {
+        "id": "91d422f0341658f2",
+        "type": "function",
+        "z": "0aa52e0f871b0885",
+        "name": "populate users in posts",
+        "func": "// populate user values\nlet users = msg.payload.users;\nlet posts = msg.payload.posts;\n\nmsg.payload.users = users.filter((user) => posts.usersSet.has(user.id));\n\nmsg = {};\nmsg.topic = \"populated posts\"\nmsg.payload = posts.posts.map((post) => Object.assign(post, {user: users[post.userId-1]}));\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1450,
+        "y": 600,
+        "wires": [
+            [
+                "df117f33d545b8eb"
             ]
         ]
     }
