@@ -204,5 +204,15 @@
                 "df117f33d545b8eb"
             ]
         ]
+    },
+    {
+        "id": "9cfea4c7663aaded",
+        "type": "comment",
+        "z": "0aa52e0f871b0885",
+        "name": "Use jsonplaceholder to showcase basic workflow",
+        "info": "",
+        "x": 340,
+        "y": 400,
+        "wires": []
     }
 ]
