@@ -214,5 +214,74 @@
         "x": 340,
         "y": 400,
         "wires": []
+    },
+    {
+        "id": "1e0a09ea2bdf70f4",
+        "type": "inject",
+        "z": "0aa52e0f871b0885",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 800,
+        "wires": [
+            [
+                "c38db58835c45484"
+            ]
+        ]
+    },
+    {
+        "id": "c38db58835c45484",
+        "type": "http request",
+        "z": "0aa52e0f871b0885",
+        "name": "get todos",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://jsonplaceholder.typicode.com/todos",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 400,
+        "y": 800,
+        "wires": [
+            [
+                "ef23cedbdb10e848"
+            ]
+        ]
+    },
+    {
+        "id": "ef23cedbdb10e848",
+        "type": "debug",
+        "z": "0aa52e0f871b0885",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 800,
+        "wires": []
     }
 ]
