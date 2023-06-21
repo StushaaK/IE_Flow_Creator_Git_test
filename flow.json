@@ -283,5 +283,69 @@
         "x": 580,
         "y": 800,
         "wires": []
+    },
+    {
+        "id": "e2e403cc7eef28b1",
+        "type": "function",
+        "z": "0aa52e0f871b0885",
+        "name": "random number generator",
+        "func": "let rnd = Math.random() * 1000;\n\nmsg.topic = \"Random number\";\nmsg.payload = rnd;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 940,
+        "wires": [
+            [
+                "71983f44019e6132"
+            ]
+        ]
+    },
+    {
+        "id": "71983f44019e6132",
+        "type": "debug",
+        "z": "0aa52e0f871b0885",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "16870d5d2417f631",
+        "type": "inject",
+        "z": "0aa52e0f871b0885",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 940,
+        "wires": [
+            [
+                "e2e403cc7eef28b1"
+            ]
+        ]
     }
 ]
